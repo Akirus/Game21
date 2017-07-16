@@ -1,0 +1,8 @@
+﻿{
+  "Routes" : [
+    {
+      "name": "default",
+      "template": "{controller=Test}/{action=Index}/{id?}"
+    }
+  ]
+}
