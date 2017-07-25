@@ -52,7 +52,7 @@ namespace Game21
             loggerFactory.AddConsole(Configuration.Logging);
             loggerFactory.AddDebug();
             
-            var createdTask = playersContext.Database.EnsureCreatedAsync();
+            await playersContext.Database.EnsureCreatedAsync();
             
             if (env.IsDevelopment())
             {
@@ -74,8 +74,6 @@ namespace Game21
                     routes.MapRoute(item.Name, item.Template);
                 }
             });
-
-            await createdTask;
         }
     }
 }
