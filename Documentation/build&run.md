@@ -28,7 +28,7 @@ docker create -v /var/opt/mssql --name linuxsqldata microsoft/mssql-server-linux
 Then mount the volumes from this container:
 
 ```
-docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' \
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Test123$' \
     -p 1433:1433 -d \
     --volumes-from linuxsqldata \
     microsoft/mssql-server-linux
