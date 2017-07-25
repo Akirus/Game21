@@ -9,6 +9,8 @@ docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Test123$' \
 	--name $MSSQL_CONTAINER_NAME \
     microsoft/mssql-server-linux"
 
+docker rm $MSSQL_CONTAINER_NAME
+
 docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Test123$' \
     -p 1433:1433 -d \
 	--volumes-from linuxsqldata \

@@ -4,6 +4,13 @@
 *   docker
 *   dotnet core
 
+## Building application
+Use build.sh to build the whole application and create docker image
+
+## Running application
+Use run-all.sh to run mssql container and application container.
+use run-app-container.sh to run only application.
+
 ## Build flow:
 1. dotnet restore
 2. dotnet build
