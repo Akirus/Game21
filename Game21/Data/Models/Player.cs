@@ -1,10 +1,12 @@
-﻿namespace Game21.Models
+﻿namespace Game21.Data.Models
 {
     public class Player
     {
-        public string Id { get; set; }
+        public string ID { get; set; }
         
         public string Name { get; set; }
+        
+        
         
     }
 }

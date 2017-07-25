@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 
 namespace Game21.Service.Configuration
@@ -23,6 +24,9 @@ namespace Game21.Service.Configuration
                 }
             }
         }
+
+        public string DefaultConnection =>
+            ConfigurationRoot.GetConnectionString("DefaultConnection");
 
         public IConfigurationSection Logging => ConfigurationRoot.GetSection("Logging");
     }

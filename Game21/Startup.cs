@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Game21.Data;
 using Game21.Service;
 using Game21.Service.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -36,16 +38,21 @@ namespace Game21
         {
             // Add framework services.
             services.AddMvc();
+
+            services.AddDbContext<PlayersContext>(options => options.UseSqlServer(
+                Configuration.DefaultConnection));
             
             // Add Application services.
             services.AddSingleton<ApplicationConfiguration>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public async void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, PlayersContext playersContext)
         {
             loggerFactory.AddConsole(Configuration.Logging);
             loggerFactory.AddDebug();
+            
+            var createdTask = playersContext.Database.EnsureCreatedAsync();
             
             if (env.IsDevelopment())
             {
@@ -56,6 +63,7 @@ namespace Game21
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
             
             app.UseStaticFiles();
 
@@ -66,6 +74,8 @@ namespace Game21
                     routes.MapRoute(item.Name, item.Template);
                 }
             });
+
+            await createdTask;
         }
     }
 }
