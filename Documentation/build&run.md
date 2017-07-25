@@ -27,7 +27,7 @@ Use **go.sh** to buld and run application.
 ## Issues 
 
 ### Issue #1
-###how to persist data into docker container. 
+### how to persist data into docker container. 
 
 You can create a persistent data container with the image itself.
 First create the data container and with volume /var/opt/mssql:
