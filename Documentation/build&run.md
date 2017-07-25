@@ -8,8 +8,10 @@
 Use build.sh to build the whole application and create docker image
 
 ## Running application
-Use run-all.sh to run mssql container and application container.
-use run-app-container.sh to run only application.
+Use run.sh to run mssql container and application container.
+use run-application-container.sh to run only application.
+
+Use go.sh to buld and run application.
 
 ## Build flow:
 1. dotnet restore
