@@ -5,13 +5,14 @@
 *   dotnet core
 
 ## Building application
-Use build.sh to build the whole application and create docker image
+Use **build.sh** to build the whole application and create docker image
 
 ## Running application
-Use run.sh to run mssql container and application container.
-use run-application-container.sh to run only application.
+Use **run.sh** to run mssql container and application container.
 
-Use go.sh to buld and run application.
+use **run-application-container.sh** to run only application.
+
+Use **go.sh** to buld and run application.
 
 ## Build flow:
 1. dotnet restore
@@ -26,7 +27,7 @@ Use go.sh to buld and run application.
 ## Issues 
 
 ### Issue #1
-how to persist data into docker container. 
+###how to persist data into docker container. 
 
 You can create a persistent data container with the image itself.
 First create the data container and with volume /var/opt/mssql:
