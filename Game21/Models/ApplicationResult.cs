@@ -5,7 +5,7 @@ namespace Game21.Models
 {
     public class ApplicationResult
     {
-        public virtual bool Success { get; set; }
+        public virtual bool Success { get; set; } = true;
         
         public virtual IEnumerable<string> ErrorMessages { get; set; }
         

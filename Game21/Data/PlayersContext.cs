@@ -13,10 +13,15 @@ namespace Game21.Data
         
         public DbSet<Player> Players { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Player>().ToTable("Players");
+            modelBuilder.Entity<Stats>().ToTable("Stats");
+
+
+            modelBuilder.Entity<Player>().
+                HasIndex(player => player.Name).
+                IsUnique(true);
         }
     }
 }

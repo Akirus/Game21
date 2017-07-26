@@ -51,8 +51,8 @@ namespace Game21
         {
             loggerFactory.AddConsole(Configuration.Logging);
             loggerFactory.AddDebug();
-            
-            await playersContext.Database.EnsureCreatedAsync();
+
+            playersContext.Database.Migrate();
             
             if (env.IsDevelopment())
             {

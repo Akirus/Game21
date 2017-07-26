@@ -2,12 +2,19 @@
 using System.Linq;
 using Game21.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Game21.Controllers
 {
     public class BaseController : Controller
     {
-        public IActionResult Result(ApplicationResult result) => Json(result);
+
+        public JsonSerializerSettings DefaultSerializerSettings { get; } = new JsonSerializerSettings()
+        {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        };
+        
+        public IActionResult Result(ApplicationResult result) => Json(result, DefaultSerializerSettings);
 
         public IActionResult Fine(object result, params string[] sucessMessages)
         {
