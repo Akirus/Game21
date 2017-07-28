@@ -2,16 +2,31 @@
 using System.Linq;
 using Game21.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Game21.Controllers
 {
     public class BaseController : Controller
     {
+        
+        protected ILoggerFactory LoggerFactory { get; set; }
 
-        public JsonSerializerSettings DefaultSerializerSettings { get; } = new JsonSerializerSettings()
+        private ILogger _logger;
+
+        public ILogger Logger => _logger ?? 
+                                 (_logger = LoggerFactory.CreateLogger(GetType().FullName));
+
+        public BaseController(ILoggerFactory loggerFactory)
         {
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            LoggerFactory = loggerFactory;
+        }
+        
+        public JsonSerializerSettings DefaultSerializerSettings { get; } = new JsonSerializerSettings
+        {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+            ContractResolver = new CamelCasePropertyNamesContractResolver()
         };
         
         public IActionResult Result(ApplicationResult result) => Json(result, DefaultSerializerSettings);

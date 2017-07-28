@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Game21.Data;
 using Game21.Service;
 using Game21.Service.Configuration;
+using Game21.Service.Configuration.Routes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -28,8 +29,8 @@ namespace Game21
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddJsonFile("routes.json", false, true)
                 .AddEnvironmentVariables();
-            
-            Configuration = new ApplicationConfiguration(builder.Build());   
+                        
+            Configuration = new ApplicationConfiguration(builder.Build());
         }
 
        
@@ -41,13 +42,19 @@ namespace Game21
 
             services.AddDbContext<PlayersContext>(options => options.UseSqlServer(
                 Configuration.DefaultConnection));
+
+            services.AddSingleton<PlayerRepository>();
+            services.AddScoped<PlayerService>();
+
+            // Add IServiceCollection only for meta controller purposes.
+            services.AddSingleton<IServiceCollection>(services);
             
             // Add Application services.
             services.AddSingleton<ApplicationConfiguration>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public async void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, PlayersContext playersContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, PlayersContext playersContext)
         {
             loggerFactory.AddConsole(Configuration.Logging);
             loggerFactory.AddDebug();
@@ -63,7 +70,6 @@ namespace Game21
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
             
             app.UseStaticFiles();
 
@@ -71,8 +77,9 @@ namespace Game21
             {
                 foreach (var item in Configuration.Routes)
                 {
-                    routes.MapRoute(item.Name, item.Template);
+                    routes.MapRoute(item);
                 }
+                
             });
         }
     }
