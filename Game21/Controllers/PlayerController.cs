@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Game21.Data;
 using Game21.Data.Models;
 using Game21.Models;
 using Game21.Service;
+using Game21.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
@@ -30,33 +32,61 @@ namespace Game21.Controllers
             return Fine("Success!");
         }
         
-        public async Task<IActionResult> Login(string name)
+        public async Task<IActionResult> Login([DataType(DataType.Text)] string name)
         {
-            Player player = await PlayerService.LoginAsync(name);
-            return Fine(player);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Player player = await PlayerService.LoginAsync(name);
+                    return Fine(player);
+                }
+                catch (Exception e)
+                {
+                    Logger.LogError(e);
+                    return Fail("Internal Error!");
+                }
+            }
+            
+            return Fail();
         }
 
         public IActionResult Current()
         {
-            return Fine(PlayerService.Current);
+            try
+            {
+                return Fine(PlayerService.Current);
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e);
+                return Fail("Internal Error!");
+            }
         }
 
         public IActionResult List(PaginationModel model)
         {
-            var result = Repository.All().
-                Skip((int) (model.PageNumber * model.PageSize)).
-                Take((int) model.PageSize);
-            
-            Logger.LogInformation($"PageNumber: {model.PageNumber}; PageSize: {model.PageSize}");
-            
-            if (result.Any())
+            try
             {
-                return Fine(result,
-                    $"Displaying results from {model.PageNumber * model.PageSize + 1} " +
-                    $"to {model.PageNumber * model.PageSize + result.Count()}");
+                var result = Repository.All().Skip((int) (model.PageNumber * model.PageSize))
+                    .Take((int) model.PageSize);
+
+                Logger.LogInformation($"PageNumber: {model.PageNumber}; PageSize: {model.PageSize}");
+
+                if (result.Any())
+                {
+                    return Fine(result,
+                        $"Displaying results from {model.PageNumber * model.PageSize + 1} " +
+                        $"to {model.PageNumber * model.PageSize + result.Count()}");
+                }
+
+                return Fine(result, "There is no users in repository");
             }
-            
-            return Fine(result, "There is no users in repository");
+            catch (Exception e)
+            {
+                Logger.LogError(e);
+                return Fail("Internal Error!");
+            }
         }
     }
 }

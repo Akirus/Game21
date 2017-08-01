@@ -44,10 +44,13 @@ namespace Game21.Controllers
 
         public IActionResult Fail(params string[] failMessages)
         {
+            var errors = ModelState.Values.
+                SelectMany(value => value.Errors.Select(error => error.ErrorMessage));
+                
             return Result(new ApplicationResult()
             {
                 Result = null,
-                ErrorMessages = failMessages,
+                ErrorMessages = errors.Concat(failMessages),
                 Success = false,
                 SuccessMessages = Enumerable.Empty<string>()
             });
