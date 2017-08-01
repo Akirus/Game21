@@ -9,9 +9,11 @@ using Game21.Service.Configuration;
 using Game21.Service.Configuration.Routes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 
 namespace Game21
@@ -37,13 +39,28 @@ namespace Game21
       // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            
             // Add framework services.
             services.AddMvc();
 
             services.AddDbContext<PlayersContext>(options => options.UseSqlServer(
                 Configuration.DefaultConnection));
 
-            services.AddSingleton<PlayerRepository>();
+            services.AddDistributedMemoryCache();
+            
+//            services.AddDistributedSqlServerCache(options =>
+//            {
+//                options.ConnectionString = Configuration.CacheConnection;
+//                options.SchemaName = "dbo";
+//                options.TableName = "Sessions";
+//            });
+            
+            services.AddSession();
+
+            services.AddScoped<SessionService>();
+            
+            services.AddScoped<PlayerRepository>();
             services.AddScoped<PlayerService>();
 
             // Add IServiceCollection only for meta controller purposes.
@@ -60,6 +77,7 @@ namespace Game21
             loggerFactory.AddDebug();
 
             playersContext.Database.Migrate();
+
             
             if (env.IsDevelopment())
             {
@@ -73,13 +91,16 @@ namespace Game21
             
             app.UseStaticFiles();
 
+            app.UseSession();
+
             app.UseMvc(routes =>
             {
                 foreach (var item in Configuration.Routes)
                 {
                     routes.MapRoute(item);
                 }
-                
+
+                routes.MapRoute("fallback", "{*whatever}", new {controller = "Home", action = "Index"});
             });
         }
     }

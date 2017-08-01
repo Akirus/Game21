@@ -34,6 +34,8 @@ namespace Game21.Service.Configuration
         public string DefaultConnection =>
             ConfigurationRoot.GetConnectionString("DefaultConnection");
 
+        public string CacheConnection => DefaultConnection;
+        
         public IConfigurationSection Logging => ConfigurationRoot.GetSection("Logging");
     }
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Game21.Data;
+using Game21.Data.Models;
 using Game21.Models;
 using Game21.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -22,11 +24,16 @@ namespace Game21.Controllers
             PlayerService = playerService;
         }
 
-        public IActionResult Login(string name)
+        public IActionResult Logout()
         {
-            //TODO implement login staff
-            
-            return Fine("");
+            PlayerService.Logout();
+            return Fine("Success!");
+        }
+        
+        public async Task<IActionResult> Login(string name)
+        {
+            Player player = await PlayerService.LoginAsync(name);
+            return Fine(player);
         }
 
         public IActionResult Current()

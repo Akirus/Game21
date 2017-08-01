@@ -19,6 +19,9 @@ namespace Game21.Data.Models
         public int DefeatsCount { get; set; }
 
         [NotMapped]
-        public double WinRate => WinsCount / (double)(WinsCount + DefeatsCount);
+        public int GamesCount => WinsCount + DefeatsCount;
+        
+        [NotMapped]
+        public double WinRate => WinsCount / (double)GamesCount;
     }
 }

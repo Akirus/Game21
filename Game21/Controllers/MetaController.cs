@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Game21.Service.Configuration;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -18,6 +19,10 @@ namespace Game21.Controllers
             return Json(configuration);
         }
 
+        public IActionResult Session([FromServices] IHttpContextAccessor accessor)
+        {
+            return Json(accessor.HttpContext.Session.IsAvailable);
+        }
 
         public IActionResult Services([FromServices] IServiceCollection collection)
         {
@@ -25,7 +30,7 @@ namespace Game21.Controllers
                 new
                 {
                     Type = service.ServiceType?.FullName,
-                    Lifetime = service.Lifetime,
+                    Lifetime = service.Lifetime.ToString(),
                     Instance = service.ImplementationType?.FullName
                 });
             

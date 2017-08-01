@@ -62,24 +62,13 @@ namespace Game21.Data
             return player;
         }
 
-        public virtual void Save(Player player)
+        public virtual async void Save(Player player)
         {
-            player = string.IsNullOrEmpty(player.ID) ? 
-                PlayersContext.Add(player).Entity : 
-                PlayersContext.Update(player).Entity;
+            player = string.IsNullOrEmpty(player.ID)
+                ? PlayersContext.Add(player).Entity
+                : PlayersContext.Update(player).Entity;
 
-            if (string.IsNullOrEmpty(player.PlayerStats.PlayerId))
-            {
-                player.PlayerStats.PlayerId = player.ID;
-                player.PlayerStats.Player = player;
-                PlayersContext.Update(player.PlayerStats);
-            }
-            else
-            {
-                PlayersContext.Update(player.PlayerStats);
-            }
-            
-            PlayersContext.SaveChanges();
+            await PlayersContext.SaveChangesAsync();
         }
         
     }
