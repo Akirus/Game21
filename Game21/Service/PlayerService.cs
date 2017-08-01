@@ -19,8 +19,7 @@ namespace Game21.Service
 
         public virtual void Logout()
         {
-            SessionService.IsLogined = false;
-            SessionService.PlayerId = null;
+            SessionService.Abandon();
         }
 
         public virtual Player Login(string name)

@@ -47,16 +47,16 @@ namespace Game21
             services.AddDbContext<PlayersContext>(options => options.UseSqlServer(
                 Configuration.DefaultConnection));
 
-            services.AddDistributedMemoryCache();
+//            services.AddDistributedMemoryCache();
             
-//            services.AddDistributedSqlServerCache(options =>
-//            {
-//                options.ConnectionString = Configuration.CacheConnection;
-//                options.SchemaName = "dbo";
-//                options.TableName = "Sessions";
-//            });
+            services.AddDistributedSqlServerCache(options =>
+            {
+                options.ConnectionString = Configuration.CacheConnection;
+                options.SchemaName = "dbo";
+                options.TableName = "Sessions";
+            });
             
-            services.AddSession();
+            services.AddSession(options => options.IdleTimeout = TimeSpan.FromHours(1));
 
             services.AddScoped<SessionService>();
             

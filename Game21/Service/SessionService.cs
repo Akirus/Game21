@@ -41,5 +41,10 @@ namespace Game21.Service
             }
             set => Session.SetString("isLogined", value.ToString());
         }
+
+        public void Abandon()
+        {
+            Session.Clear();
+        }
     }
 }
