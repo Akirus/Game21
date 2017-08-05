@@ -1,0 +1,28 @@
+
+<!-- ko if: successMessages() && successMessages().length > 0 -->
+<div class="alert alert-success" data-bind="foreach: successMessages">
+    <div data-bind="html: $data"></div>
+</div>
+<!-- /ko -->
+
+
+<table class="table">
+    <thead class="thead-inverse">
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Last Visit</th>
+        <th>Games Count</th>
+        <th>Win Rate</th>
+    </tr>
+    </thead>
+    <tbody data-bind="foreach: players">
+    <tr>
+        <th scope="row" data-bind="text: $index() + 1">1</th>
+        <td data-bind="text: name"></td>
+        <td data-bind="text: playerStats.lastVisit"></td>
+        <td data-bind="text: playerStats.gamesCount"></td>
+        <td data-bind="text: playerStats.winRate"></td>
+    </tr>
+    </tbody>
+</table>

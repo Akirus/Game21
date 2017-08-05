@@ -1,4 +1,3 @@
-﻿
-<div id="app-container">
-    You are on: <span data-bind="text: currentLocation"></span>
-</div>
+﻿<!-- ko if: currentPage() -->
+<div id="page-container" class="page-container" data-bind="template: {data: currentPage().viewModel, name: 'currentPageTemplate'}"></div>
+<!-- /ko -->

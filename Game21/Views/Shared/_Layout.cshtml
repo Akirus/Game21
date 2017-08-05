@@ -1,9 +1,9 @@
  <!DOCTYPE html>
-<html>
+<html id="app-container">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Game21</title>
+    <title data-bind="text: title">Game21</title>
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -29,6 +29,8 @@
 
     <script data-main="/js/site.js" src="~/lib/requirejs/require.js"></script>
 
-    @RenderSection("Scripts", required: false)
+    <script type="text/html" id="currentPageTemplate"></script>
+
+@RenderSection("Scripts", required: false)
 </body>
 </html>

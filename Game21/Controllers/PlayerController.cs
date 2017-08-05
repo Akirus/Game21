@@ -26,12 +26,14 @@ namespace Game21.Controllers
             PlayerService = playerService;
         }
 
+        [HttpPost]
         public IActionResult Logout()
         {
             PlayerService.Logout();
             return Fine("Success!");
         }
         
+        [HttpPost]
         public async Task<IActionResult> Login([DataType(DataType.Text)] string name)
         {
             if (ModelState.IsValid)
